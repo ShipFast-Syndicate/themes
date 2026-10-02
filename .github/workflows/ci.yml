@@ -1,0 +1,19 @@
+name: CI
+on:
+  push:
+    branches: [main, develop, "bootstrap/**"]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Keep the caller and local job IDs: branch rules require ci / summary.
+  ci:
+    uses: ./.github/workflows/public-ci.yml

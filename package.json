@@ -1,0 +1,20 @@
+{
+  "name": "@alphabros/themes",
+  "version": "0.0.0-development",
+  "private": true,
+  "description": "Planned framework-agnostic theme tooling: token contracts, validation, adapters and editor.",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShipFast-Syndicate/themes.git"
+  },
+  "homepage": "https://github.com/ShipFast-Syndicate/themes#readme",
+  "bugs": {
+    "url": "https://github.com/ShipFast-Syndicate/themes/issues"
+  },
+  "author": "Alpha Bros (https://alphabros.eu)",
+  "scripts": {
+    "check": "node .github/scripts/check-bootstrap.mjs"
+  }
+}
