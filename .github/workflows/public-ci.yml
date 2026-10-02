@@ -18,3 +18,11 @@ jobs:
           node-version: "22"
       - name: Validate repository bootstrap
         run: node .github/scripts/check-bootstrap.mjs
+      - name: Install locked development dependencies
+        run: npm ci --include=dev
+      - name: Build local foundation
+        run: npm run build
+      - name: Check consumer types
+        run: npm run typecheck
+      - name: Test schema and contrast
+        run: npm test
