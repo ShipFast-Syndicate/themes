@@ -4,6 +4,8 @@ import {
   type Theme,
   type CoreColorPath,
   type CoreLengthPath,
+  type HexColor,
+  type ProductTokenSpec,
 } from "../src/index.js";
 const declaration = defineProductTokens({
   "demo.heroEnd": { type: "color", defaultFrom: "color.accent.subtle" },
@@ -25,6 +27,37 @@ if (declaration.ok) {
     // @ts-expect-error immutable product
     result.theme.product["demo.gap"] = 10;
     void incorrect;
+  }
+}
+// Colour tokens must type as colours, never as numbers, including when the
+// declaration is widened and the descriptor type is a union.
+const widened = defineProductTokens({
+  "demo.mixed": {
+    type: "color",
+    defaultFrom: "color.accent.base",
+  } as ProductTokenSpec[string],
+});
+if (widened.ok) {
+  const mixed = validateTheme("{}", { productTokens: widened.tokens });
+  if (mixed.theme) {
+    const value: HexColor | number = mixed.theme.product["demo.mixed"];
+    // @ts-expect-error a widened descriptor may be a colour, not only a number
+    const asNumber: number = mixed.theme.product["demo.mixed"];
+    void value;
+    void asNumber;
+  }
+}
+const colorOnly = defineProductTokens({
+  "demo.brand": { type: "color", defaultFrom: "color.accent.base" },
+});
+if (colorOnly.ok) {
+  const only = validateTheme("{}", { productTokens: colorOnly.tokens });
+  if (only.theme) {
+    const brand: HexColor = only.theme.product["demo.brand"];
+    // @ts-expect-error colour tokens are not numbers
+    const asNumber: number = only.theme.product["demo.brand"];
+    void brand;
+    void asNumber;
   }
 }
 defineProductTokens({

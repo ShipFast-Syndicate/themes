@@ -1,4 +1,5 @@
 export type {
+  HexColor,
   Theme,
   ValidatedTheme,
   ProductTokenSpec,

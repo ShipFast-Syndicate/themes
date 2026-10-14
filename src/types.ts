@@ -23,8 +23,15 @@ declare const issued: unique symbol;
 export interface ProductTokens<T extends ProductTokenSpec = ProductTokenSpec> {
   readonly [issued]: T;
 }
+// Distributes over the descriptor union so a widened spec yields
+// `HexColor | number` instead of collapsing every token to `number`.
+type ProductValue<S> = S extends { readonly type: "color" }
+  ? HexColor
+  : S extends { readonly type: "length" }
+    ? number
+    : never;
 type ProductValues<T extends ProductTokenSpec> = {
-  readonly [K in keyof T]: T[K]["type"] extends "color" ? HexColor : number;
+  readonly [K in keyof T]: ProductValue<T[K]>;
 };
 type FontStackId = "system-sans" | "system-serif" | "system-mono";
 export interface Theme {
