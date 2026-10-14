@@ -5,9 +5,10 @@ contracts, validation, adapters and an optional editor.
 
 ## Status
 
-This repository is an unreleased bootstrap. It contains the project direction,
-package metadata and repository checks. The theme engine, adapters, editor and
-presets are planned; no runtime API or installable release is provided here yet.
+This repository is unreleased. It contains a local schema/value-validation and
+contrast-reporting foundation, package metadata and repository checks. CSS
+application, adapters, editor and presets are planned. No installable release or
+package exports are provided.
 The package is marked `private: true` to prevent publication during this stage.
 
 ## Direction
@@ -25,16 +26,22 @@ Read the [architecture](docs/architecture.md), [roadmap](docs/roadmap.md) and
 
 ## Repository checks
 
-Node.js 22 or newer is required for the repository checks. No dependencies need
-to be installed at this stage.
+Node.js 22 is required. Install the locked development compiler for local builds
+and tests; there are no runtime dependencies.
 
 ```sh
-node .github/scripts/check-bootstrap.mjs
+npm ci --include=dev
+npm run check
+npm run build
+npm run typecheck
+npm test
 ```
 
-CI runs this check on GitHub-hosted runners. It validates the bootstrap metadata,
-documentation links and publication guard; runtime tests and builds will be
-added alongside the implementation.
+CI runs these checks on GitHub-hosted runners. The original bootstrap guard
+continues to validate metadata, documentation links and disabled publication.
+See the [local schema/validation contract](docs/schema-validation.md) for APIs,
+limits, contrast semantics and the distinction between source checks and product
+accessibility acceptance.
 
 Changes target `develop`. Releases are promoted to `main` after the relevant
 validation and release approval. Publication automation is not enabled yet.
