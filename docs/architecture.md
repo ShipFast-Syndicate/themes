@@ -1,8 +1,11 @@
 # Planned architecture
 
-This document describes implementation goals. It does not define a working API.
-The first implementation must establish and document the concrete token schema
-and versioning rules before adapters or applications depend on them.
+This document describes broader implementation goals. The implemented internal,
+unreleased schema/value-validation/contrast foundation is documented in the
+[local contract](schema-validation.md). CSS custom-property output is
+implemented as a proposed, unreleased contract in
+[CSS serialisation](css-serialisation.md). CSS application, adapters and product
+integration remain planned; no installable package is available.
 
 ## Core
 
