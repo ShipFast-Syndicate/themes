@@ -92,7 +92,8 @@ Radius values are finite numbers in CSS-pixel units: `sm/md/lg` in [0, 64] and
 `pill` in [0, 999], inclusive, without ordering requirements. Font `body/heading`
 allow `system-sans`, `system-serif`, `system-mono`; `mono` permits `system-mono`
 only; `scale` is finite in [0.75, 1.5]. Numbers are not coerced from strings.
-Stack mapping and density multipliers belong to future serialization.
+Stack mapping and density multipliers are defined by the proposed
+[CSS serialisation contract](css-serialisation.md).
 
 ## Typed product tokens
 

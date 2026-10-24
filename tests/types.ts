@@ -1,5 +1,6 @@
 import {
   defineProductTokens,
+  serializeThemeCss,
   validateTheme,
   type Theme,
   type CoreColorPath,
@@ -83,3 +84,18 @@ void badColor;
 void badSeries;
 void badLength;
 void mode;
+// serializeThemeCss accepts what validateTheme returns; the runtime registry,
+// not this type, is the boundary.
+if (declaration.ok) {
+  const validated = validateTheme("{}", { productTokens: declaration.tokens });
+  if (validated.theme) {
+    const css: string = serializeThemeCss(validated.theme, {
+      form: "data-theme",
+    });
+    void css;
+    // @ts-expect-error unsupported form
+    serializeThemeCss(validated.theme, { form: "body" });
+    // @ts-expect-error selectors are not caller-supplied
+    serializeThemeCss(validated.theme, { selector: ":root" });
+  }
+}

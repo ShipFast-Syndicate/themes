@@ -2,6 +2,7 @@ import { diagnostic, freeze, ordered, pointer } from "./diagnostics.js";
 import { decode } from "./json.js";
 import { getDeclarations, groups, ownData } from "./extensions.js";
 import { coreValue, hexPattern, reportContrast } from "./contrast.js";
+import { register } from "./provenance.js";
 import type {
   Diagnostic,
   ProductTokens,
@@ -272,11 +273,13 @@ export function validateTheme<
     );
     warnings.splice(Math.max(0, 64 - errors.length));
   }
+  if (errors.length) return { ...failure(), contrast };
+  const validated = freeze(root) as unknown as ValidatedTheme<T>;
+  // Registered only after freezing and only for successful results.
+  register(validated, spec);
   return {
-    ok: errors.length === 0,
-    theme: errors.length
-      ? null
-      : (freeze(root) as unknown as ValidatedTheme<T>),
+    ok: true,
+    theme: validated,
     errors: ordered(errors),
     warnings: ordered(warnings),
     contrast,

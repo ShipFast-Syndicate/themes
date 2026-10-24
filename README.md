@@ -6,8 +6,9 @@ contracts, validation, adapters and an optional editor.
 ## Status
 
 This repository is unreleased. It contains a local schema/value-validation and
-contrast-reporting foundation, package metadata and repository checks. CSS
-application, adapters, editor and presets are planned. No installable release or
+contrast-reporting foundation, a proposed CSS custom-property serialiser, package
+metadata and repository checks. CSS application, adapters, editor and presets are
+planned. No installable release or
 package exports are provided.
 The package is marked `private: true` to prevent publication during this stage.
 
@@ -41,7 +42,9 @@ CI runs these checks on GitHub-hosted runners. The original bootstrap guard
 continues to validate metadata, documentation links and disabled publication.
 See the [local schema/validation contract](docs/schema-validation.md) for APIs,
 limits, contrast semantics and the distinction between source checks and product
-accessibility acceptance.
+accessibility acceptance. The proposed
+[CSS custom-property serialisation contract](docs/css-serialisation.md) covers
+`serializeThemeCss`, its name map and output forms.
 
 Changes target `develop`. Releases are promoted to `main` after the relevant
 validation and release approval. Publication automation is not enabled yet.

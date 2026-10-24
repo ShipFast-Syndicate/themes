@@ -2,7 +2,9 @@
 
 This document describes broader implementation goals. The implemented internal,
 unreleased schema/value-validation/contrast foundation is documented in the
-[local contract](schema-validation.md). CSS output, adapters and product
+[local contract](schema-validation.md). CSS custom-property output is
+implemented as a proposed, unreleased contract in
+[CSS serialisation](css-serialisation.md). CSS application, adapters and product
 integration remain planned; no installable package is available.
 
 ## Core
