@@ -1,6 +1,10 @@
 import {
   defineProductTokens,
   serializeThemeCss,
+  themeColorMetas,
+  themeHtmlAttributes,
+  systemBootScript,
+  systemBootScriptCspSource,
   validateTheme,
   type Theme,
   type CoreColorPath,
@@ -99,3 +103,40 @@ if (declaration.ok) {
     serializeThemeCss(validated.theme, { selector: ":root" });
   }
 }
+// Application helpers accept validated themes with and without product tokens;
+// the runtime registry, not these types, is the boundary.
+const applied = validateTheme("{}");
+if (applied.theme && declaration.ok) {
+  const withProduct = validateTheme("{}", { productTokens: declaration.tokens });
+  if (withProduct.theme) {
+    const attrs: Readonly<Record<string, string>> = themeHtmlAttributes({
+      preference: "fixed",
+      theme: withProduct.theme,
+    });
+    const metas: readonly { readonly content: string; readonly media?: string }[] =
+      themeColorMetas({
+        preference: "system",
+        light: applied.theme,
+        dark: withProduct.theme,
+        fallback: "dark",
+      });
+    void attrs;
+    void metas;
+  }
+  themeHtmlAttributes({ preference: "fixed", theme: applied.theme });
+  // @ts-expect-error system input requires a fallback
+  themeHtmlAttributes({ preference: "system", light: applied.theme, dark: applied.theme });
+  themeColorMetas({
+    preference: "system",
+    light: applied.theme,
+    dark: applied.theme,
+    // @ts-expect-error fallback is light or dark only
+    fallback: "auto",
+  });
+  // @ts-expect-error a raw theme object is not a validated theme
+  themeHtmlAttributes({ preference: "fixed", theme: {} as Theme });
+}
+const bootScript: string = systemBootScript;
+const bootSource: string = systemBootScriptCspSource;
+void bootScript;
+void bootSource;

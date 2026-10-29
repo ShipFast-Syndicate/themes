@@ -44,7 +44,10 @@ See the [local schema/validation contract](docs/schema-validation.md) for APIs,
 limits, contrast semantics and the distinction between source checks and product
 accessibility acceptance. The proposed
 [CSS custom-property serialisation contract](docs/css-serialisation.md) covers
-`serializeThemeCss`, its name map and output forms.
+`serializeThemeCss`, its name map and output forms. The proposed
+[application attributes and boot script contract](docs/application-attributes.md)
+covers `themeHtmlAttributes`, `themeColorMetas` and the constant system boot
+script with its CSP hash.
 
 Changes target `develop`. Releases are promoted to `main` after the relevant
 validation and release approval. Publication automation is not enabled yet.
