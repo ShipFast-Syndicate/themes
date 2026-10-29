@@ -255,6 +255,10 @@ test("provenance stays private and is not shared across module copies", async (t
     "contrastRatio",
     "defineProductTokens",
     "serializeThemeCss",
+    "systemBootScript",
+    "systemBootScriptCspSource",
+    "themeColorMetas",
+    "themeHtmlAttributes",
     "validateTheme",
   ]);
   // A query-string import would still share dist/provenance.js, so load a
