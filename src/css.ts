@@ -2,9 +2,10 @@ import { groups, ownData } from "./extensions.js";
 import { registeredSpec } from "./provenance.js";
 import type { ProductTokenSpec, ValidatedTheme } from "./types.js";
 
-// Custom-property prefix <P>. Proposed until the Q2 prefix decision is
-// recorded in ADR-themes-0002; changing it only needs a snapshot refresh.
-export const prefix = "t";
+// Custom-property prefix <P>. Q2 was decided on 2026-10-25: the namespaced
+// prefix `abt`, set before the first release. Changing it after release is
+// semver-major.
+export const prefix = "abt";
 
 export type CssForm = "root" | "data-theme" | "declarations";
 

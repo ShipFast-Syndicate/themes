@@ -1,4 +1,4 @@
-// Core names in emission order, with the open prefix written as <P>. Must
+// Core names in emission order, with the prefix (`abt`) written as <P>. Must
 // equal the table in docs/css-serialisation.md and ADR-themes-0002 item 3.
 const group = (path, leaves) => leaves.map((leaf) => `--<P>-${path}-${leaf}`);
 export const coreNames = [
