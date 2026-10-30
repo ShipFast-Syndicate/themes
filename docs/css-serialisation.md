@@ -3,9 +3,9 @@
 This page is the local contract for `serializeThemeCss`, the FEAT-themes-0002
 serialiser. It is implemented in this repository but unreleased: there is no
 installable package, no package exports and no product adoption. The
-custom-property prefix is still an open decision (Q2), so names are written
-here with `<P>`. The code currently uses the placeholder `t` (`--t-*`) from one
-internal constant; the recorded answer changes that constant and the snapshots.
+custom-property prefix was decided on 2026-10-25 (Q2): `abt`, so every name is
+`--abt-*`. Names are still written here with `<P>` for brevity. The prefix lives
+in one internal constant; changing it after the first release is semver-major.
 The contract is recorded as proposed in ADR-themes-0002.
 
 ## API
