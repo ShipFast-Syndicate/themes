@@ -8,9 +8,10 @@ contracts, validation, adapters and an optional editor.
 This repository is unreleased. It contains a local schema/value-validation and
 contrast-reporting foundation, a proposed CSS custom-property serialiser, package
 metadata and repository checks. CSS application, adapters, editor and presets are
-planned. No installable release or
-package exports are provided.
-The package is marked `private: true` to prevent publication during this stage.
+planned. There is no published release.
+The package is marked `private: true` to prevent publication during this stage, but
+it can be packed into a tarball for
+[pre-publication consumption](docs/releasing.md#pre-publication-consumption).
 
 ## Direction
 
@@ -36,8 +37,11 @@ npm run check
 npm run build
 npm run typecheck
 npm test
+npm run check:package
 ```
 
+`npm run check:package` packs the package, checks the archive's file list and
+installs the tarball into a temporary project to use every public export.
 CI runs these checks on GitHub-hosted runners. The original bootstrap guard
 continues to validate metadata, documentation links and disabled publication.
 See the [local schema/validation contract](docs/schema-validation.md) for APIs,
