@@ -14,7 +14,12 @@ assert.equal(metadata.type, "module");
 assert.equal(metadata.repository.url, "git+https://github.com/ShipFast-Syndicate/themes.git");
 assert.equal(metadata.bugs.url, "https://github.com/ShipFast-Syndicate/themes/issues");
 assert.equal(metadata.scripts.check, "node .github/scripts/check-bootstrap.mjs");
-assert.equal(metadata.exports, undefined, "Do not advertise unimplemented exports.");
+assert.deepEqual(
+  metadata.exports,
+  { ".": { types: "./dist/index.d.ts", import: "./dist/index.js" } },
+  "Only the implemented entry point may be advertised.",
+);
+assert.equal(metadata.scripts["check:package"], "node .github/scripts/check-package.mjs");
 
 const license = await readFile(path.join(root, "LICENSE"), "utf8");
 assert.ok(license.startsWith("MIT License\n"));

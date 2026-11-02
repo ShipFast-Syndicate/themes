@@ -26,3 +26,13 @@ jobs:
         run: npm run typecheck
       - name: Test schema and contrast
         run: npm test
+      - name: Check package content and install smoke test
+        run: npm run check:package -- --out "$RUNNER_TEMP/package"
+      - name: Upload pre-publication tarball
+        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: alphabros-themes-${{ github.sha }}
+          path: ${{ runner.temp }}/package/*.tgz
+          if-no-files-found: error
+          retention-days: 30
