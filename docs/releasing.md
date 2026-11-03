@@ -30,9 +30,14 @@ tarball's `sha512` integrity.
 - To pin a consumer, run `npm pack` at the chosen `develop` merge commit (or take
   the CI artifact for it), install it with a `file:` dependency and cite the
   commit and `sha512` in the consumer's change.
-- The boot-script CSP hash returned by `systemBootScriptCspSource` is
-  contract-proposed until ADR-themes-0003 (boot-script versioning) is accepted.
-  Re-check it against the consumer's CSP whenever the tarball is bumped.
+- The boot-script CSP hash returned by `systemBootScriptCspSource` changes
+  whenever the text of `systemBootScript` changes. Under ADR-themes-0003 (accepted
+  2026-11-03) such a change is **not** semver-major for now: it ships as a minor
+  or patch change, and the changelog of every release that edits the script lists
+  the new `'sha256-...'` source. Consumers with a hash-based CSP re-check it
+  against their CSP on every tarball bump. The rule applies while the package is
+  early and unreleased (`private: true`) and is to be revisited before the first
+  stable public release.
 - Publication, dist-tags, GitHub Releases and promotion to `main` remain separate,
   release-approved gates described below.
 
@@ -47,6 +52,10 @@ tarball's `sha512` integrity.
   registry's current guidance.
 - Obtain release approval, choose a version and promote the reviewed change from
   `develop` to `main`.
+- Release checklist item: if the release edits `systemBootScript`, record the new
+  `systemBootScriptCspSource` value (`'sha256-...'`) in the release's changelog or
+  release notes. This repository has no changelog file or tooling yet, so the
+  checklist is the place the rule lives until one exists.
 
 ## Publishing automation
 

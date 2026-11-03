@@ -4,9 +4,10 @@ This page is the local contract for `themeHtmlAttributes`, `themeColorMetas`,
 `systemBootScript` and `systemBootScriptCspSource`, the FEAT-themes-0003 slice.
 It is implemented in this repository but unreleased: there is no installable
 package (`private: true`, no package exports) and no product adoption. The
-contract stays **proposed** until ADR-themes-0003 is accepted. The boot-script
-semver question (is a script or hash change a major change for hash-CSP hosts?)
-is open and recorded in that ADR.
+contract is recorded in ADR-themes-0003, accepted 2026-11-03; acceptance is not
+a release, a publication or a product adoption. The boot-script semver question
+(is a script or hash change a major change for hash-CSP hosts?) is answered
+there: see the [Hash-CSP note](#hash-csp-note).
 
 The helpers take an already-resolved input. The package does not read
 cookies, storage, accounts or site settings, and it has no preference
@@ -100,7 +101,8 @@ test, so any change to the text fails loudly. Hosts must emit the text byte for
 byte (no minifier, no trailing newline) for the hash to match.
 
 Size budget: at most 400 bytes (currently 266). Raising the ceiling needs a new
-review, and any text change changes the hash (the open semver question above).
+review, and any text change changes the hash (see the semver rule in the
+[Hash-CSP note](#hash-csp-note)).
 
 ## Limits
 
@@ -157,13 +159,22 @@ placeholder.) For `fixed` input a host can drop the script tag entirely.
 A host with a hash-based CSP adds `systemBootScriptCspSource` to `script-src`,
 for example `script-src 'self' 'sha256-...'`, and emits `systemBootScript`
 unchanged. This note is not runtime-verified against any deployed CSP header.
+
 Output of `serializeThemeCss` can be placed in a host `<style>` element; that is
 a documentation note only, and stored or site-owner themes need re-validation
 before that.
 
+**Versioning rule (ADR-themes-0003, accepted 2026-11-03).** A change to the boot
+script text, and so to `systemBootScriptCspSource`, is not a semver-major change
+for now. It ships as a minor or patch change, and the changelog of every release
+that edits the script lists the new `'sha256-...'` source so hash-CSP hosts can
+update their header; hosts re-check their CSP on every bump. The rule applies
+while the package is early and unreleased and is to be revisited before the first
+stable public release. See also [release requirements](releasing.md).
+
 ## Proposed versus shipped
 
 Shipped in this repository (unreleased): the helpers, the constant script and its
-hash, and their tests. Proposed: the contract itself (ADR-themes-0003), the
-attribute names and the semver rule for the script. Not done: Klar or any other
+hash, and their tests. Decided: the contract itself and the semver rule for the
+script, in ADR-themes-0003 accepted 2026-11-03. Not done: Klar or any other
 product integration, runtime CSP verification, publication.
