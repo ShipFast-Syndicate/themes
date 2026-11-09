@@ -34,6 +34,10 @@ assert.equal(metadata.sideEffects, false);
 assert.deepEqual(metadata.files, ["dist", "LICENSE", "README.md"]);
 assert.deepEqual(metadata.exports, {
   ".": { types: "./dist/index.d.ts", import: "./dist/index.js" },
+  "./enterprise-portal": {
+    types: "./dist/enterprise-portal.d.ts",
+    import: "./dist/enterprise-portal.js",
+  },
 });
 assert.equal(metadata.main, "./dist/index.js");
 assert.equal(metadata.types, "./dist/index.d.ts");
@@ -56,7 +60,8 @@ try {
       `Unexpected file in the package: ${file}`,
     );
   }
-  for (const required of [...fixed, ...[...Object.values(metadata.exports["."])].map((p) => p.slice(2))]) {
+  const exported = Object.values(metadata.exports).flatMap((entry) => Object.values(entry));
+  for (const required of [...fixed, ...exported.map((p) => p.slice(2))]) {
     assert.ok(files.includes(required), `Missing from the package: ${required}`);
   }
   const sources = (await readFile(path.join(root, "src/index.ts"), "utf8")).matchAll(/from "\.\/([^"]+)\.js"/g);
@@ -89,11 +94,26 @@ try {
   const runtime = JSON.parse(run(process.execPath, ["smoke.mjs"], consumer));
   assert.deepEqual(runtime, [...valueNames].sort(), "Runtime exports differ from src/index.ts.");
 
+  // The adapter entry point: runtime names through the exports map, then the types below.
+  await writeFile(
+    path.join(consumer, "portal-smoke.mjs"),
+    `import * as portal from "@alphabros/themes/enterprise-portal";\nconsole.log(JSON.stringify(Object.keys(portal).sort()));\n`,
+  );
+  assert.deepEqual(
+    JSON.parse(run(process.execPath, ["portal-smoke.mjs"], consumer)),
+    ["portalAliasDeclarations"],
+    "Runtime exports of @alphabros/themes/enterprise-portal changed.",
+  );
+
   const imports = [
     `import { ${valueNames.join(", ")} } from "@alphabros/themes";`,
     `import type { ${typeNames.join(", ")} } from "@alphabros/themes";`,
     `export const values = [${valueNames.join(", ")}];`,
     `export type Types = [${typeNames.map((name) => `${name} | undefined`).join(", ")}];`,
+    `import { portalAliasDeclarations } from "@alphabros/themes/enterprise-portal";`,
+    `import type { PortalHostValues } from "@alphabros/themes/enterprise-portal";`,
+    `export const portal = [portalAliasDeclarations];`,
+    `export type PortalTypes = [PortalHostValues | undefined];`,
   ];
   await writeFile(path.join(consumer, "consumer.ts"), `${imports.join("\n")}\n`);
   await writeFile(
@@ -111,7 +131,7 @@ try {
     }),
   );
   run(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"), "-p", "tsconfig.json"], consumer);
-  console.log(`Install smoke test ok: ${valueNames.length} runtime and ${typeNames.length} type exports.`);
+  console.log(`Install smoke test ok: ${valueNames.length} runtime and ${typeNames.length} type exports, plus the enterprise-portal entry point.`);
 
   // --- 3. integrity and source commit ----------------------------------------------
   let commit = process.env.GITHUB_SHA;

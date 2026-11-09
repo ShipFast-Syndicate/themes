@@ -11,17 +11,18 @@ published, there is no GitHub Release, no npm dist-tag and no semver promise. Th
 version stays `0.0.0-development` and the pin is the source commit plus the
 tarball's `sha512` integrity.
 
-- The package exposes one entry point, `.`, resolving `dist/index.js` and
-  `dist/index.d.ts`. `files` limits the archive to `dist`, `LICENSE` and
-  `README.md`; `sideEffects` is `false`. The package stays `private: true`, which
+- The package exposes two entry points: `.`, resolving `dist/index.js` and
+  `dist/index.d.ts`, and `./enterprise-portal`, resolving
+  `dist/enterprise-portal.js` and `dist/enterprise-portal.d.ts`. `files` limits
+  the archive to `dist`, `LICENSE` and `README.md`; `sideEffects` is `false`. The package stays `private: true`, which
   `npm pack` ignores and which makes an authenticated `npm publish` fail.
 - `npm pack` runs `prepack`, which deletes `dist/` and rebuilds it, so the archive
   never carries stale output. The archive is reproducible: the same tree gives the
   same integrity.
 - `npm run check:package` (part of CI) fails if the archive contains anything other
   than the allowlist, then installs the tarball into a temporary project, imports
-  every export listed in `src/index.ts` as ESM and type-checks a consumer that
-  names each of them.
+  every export listed in `src/index.ts` and the `./enterprise-portal` entry point
+  as ESM and type-checks a consumer that names each of them.
 - CI on a push to `develop` uploads the tarball as the workflow artifact
   `alphabros-themes-<commit>` (kept 30 days) and prints its integrity and source
   commit in the log and job summary. This is evidence, not distribution: artifacts

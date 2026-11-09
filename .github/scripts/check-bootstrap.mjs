@@ -16,8 +16,14 @@ assert.equal(metadata.bugs.url, "https://github.com/ShipFast-Syndicate/themes/is
 assert.equal(metadata.scripts.check, "node .github/scripts/check-bootstrap.mjs");
 assert.deepEqual(
   metadata.exports,
-  { ".": { types: "./dist/index.d.ts", import: "./dist/index.js" } },
-  "Only the implemented entry point may be advertised.",
+  {
+    ".": { types: "./dist/index.d.ts", import: "./dist/index.js" },
+    "./enterprise-portal": {
+      types: "./dist/enterprise-portal.d.ts",
+      import: "./dist/enterprise-portal.js",
+    },
+  },
+  "Only the implemented entry points may be advertised.",
 );
 assert.equal(metadata.scripts["check:package"], "node .github/scripts/check-package.mjs");
 

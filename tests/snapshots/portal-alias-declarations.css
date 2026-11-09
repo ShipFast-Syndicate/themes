@@ -1,0 +1,18 @@
+--ab-font-family: var(--<P>-font-body);
+--ab-font-size: 0.875rem;
+--ab-color-text: var(--<P>-color-text-primary);
+--ab-color-text-muted: var(--<P>-color-text-secondary);
+--ab-color-bg: var(--<P>-color-surface-base);
+--ab-color-surface: var(--<P>-color-surface-raised);
+--ab-color-primary: var(--<P>-color-accent-base);
+--ab-color-on-primary: var(--<P>-color-text-on-accent);
+--ab-color-danger: var(--<P>-color-status-negative);
+--ab-color-success: var(--<P>-color-status-positive);
+--ab-color-border: var(--<P>-color-border-strong);
+--ab-border: 1px solid var(--<P>-color-border-strong);
+--ab-radius: var(--<P>-radius-md);
+--ab-space-1: 0.25rem;
+--ab-space-2: 0.5rem;
+--ab-space-3: 0.75rem;
+--ab-space-4: 1rem;
+--ab-shadow: 0 1px 3px rgb(0 0 0 / 20%);
