@@ -82,6 +82,22 @@ All nested key sets are exact:
 | `radius`        | `sm`, `md`, `lg`, `pill`                                      |
 | `font`          | `body`, `heading`, `mono`, `scale`                            |
 
+Five optional colour leaves may also be present. A theme that omits them stays
+valid and emits no extra CSS variables. They share the colour grammar below and
+may be translucent:
+
+| Path                     | Slot id |
+| ------------------------ | ------- |
+| `color.border.default`   | R1      |
+| `color.accent.pressed`   | R2      |
+| `color.text.accent`      | R3      |
+| `color.status.onWarning` | R4      |
+| `color.shadow`           | R5      |
+
+They are not contrast-checked and cannot be used as a product-token
+`defaultFrom` source. See the [CSS serialisation
+contract](css-serialisation.md#optional-colour-slots) for their output.
+
 Colour grammar is exactly `^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$`, normalized to
 lowercase. Alpha is the final byte divided by 255. `surface.base`, `raised`,
 `sunken`, and `chart.tooltipBg` must be opaque (including an explicit `ff` alpha).

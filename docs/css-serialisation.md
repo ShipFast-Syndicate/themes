@@ -54,7 +54,7 @@ Names are derived from token paths: segments joined by `-`, camelCase segments
 in kebab-case. There are two exceptions: `color-scheme` is the standard CSS
 property, and `density` becomes `--<P>-density-scale` because it emits a
 multiplier. Chart series keep their 0-based index. The 39 core declarations are
-emitted in this order:
+emitted in this order (optional slots are listed after the table):
 
 | # | Declaration | Token path | Value |
 |---|---|---|---|
@@ -98,7 +98,25 @@ emitted in this order:
 | 38 | `--<P>-font-scale` | `font.scale` | unitless number |
 | 39 | `--<P>-density-scale` | `density` | density scale |
 
-Product extension tokens follow the core block, sorted by declared key in UTF-16
+### Optional colour slots
+
+Five optional colour paths are emitted only when the theme sets them. A theme
+without them emits exactly the 39 declarations above. When present they follow
+`--<P>-color-chart-series-7` and precede `--<P>-radius-sm`, in this order:
+
+| Id | Declaration | Token path | Value |
+|---|---|---|---|
+| R1 | `--<P>-color-border-default` | `color.border.default` | colour |
+| R2 | `--<P>-color-accent-pressed` | `color.accent.pressed` | colour |
+| R3 | `--<P>-color-text-accent` | `color.text.accent` | colour |
+| R4 | `--<P>-color-status-on-warning` | `color.status.onWarning` | colour |
+| R5 | `--<P>-color-shadow` | `color.shadow` | colour (may be translucent) |
+
+They use the same name derivation and colour value rules as the core colours.
+They are not valid product-token `defaultFrom` sources, because a source must
+exist on every theme. They are not part of the contrast matrix.
+
+Product extension tokens follow the core and optional blocks, sorted by declared key in UTF-16
 code-unit order. A key `<ns>.<name>` emits `--<P>-ext-<ns>-<kebab(name)>`, for
 example `demo.heroEnd` becomes `--<P>-ext-demo-hero-end`. Every declared token
 is emitted, because `validateTheme` already fills missing values from their core

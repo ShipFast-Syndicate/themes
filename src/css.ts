@@ -1,4 +1,4 @@
-import { groups, ownData } from "./extensions.js";
+import { groups, optionalColorPaths, ownData } from "./extensions.js";
 import { registeredSpec } from "./provenance.js";
 import type { ProductTokenSpec, ValidatedTheme } from "./types.js";
 
@@ -72,6 +72,14 @@ export function serializeThemeCss<T extends ProductTokenSpec>(
   theme.color.chart.series.forEach((value, i) =>
     lines.push([variable(`color.chart.series.${i}`), value]),
   );
+  // Optional slots emit only when the theme sets them.
+  for (const path of optionalColorPaths) {
+    const [, ...segments] = path.split(".");
+    let value: unknown = theme.color;
+    for (const segment of segments)
+      value = (value as Record<string, unknown> | undefined)?.[segment];
+    if (typeof value === "string") lines.push([variable(path), value]);
+  }
   for (const key of ["sm", "md", "lg", "pill"] as const)
     lines.push([variable(`radius.${key}`), number(theme.radius[key]) + "px"]);
   for (const key of ["body", "heading", "mono"] as const)

@@ -1,6 +1,11 @@
 import { diagnostic, freeze, ordered, pointer } from "./diagnostics.js";
 import { decode } from "./json.js";
-import { getDeclarations, groups, ownData } from "./extensions.js";
+import {
+  getDeclarations,
+  groups,
+  optionalGroupLeaves,
+  ownData,
+} from "./extensions.js";
 import { coreValue, hexPattern, reportContrast } from "./contrast.js";
 import { register } from "./provenance.js";
 import type {
@@ -174,16 +179,28 @@ export function validateTheme<
   }
   choice(root.mode, ["light", "dark"], "/mode");
   choice(root.density, ["compact", "comfortable", "spacious"], "/density");
-  const colors = object(root.color, Object.keys(groups), "/color");
+  const colors = object(
+    root.color,
+    [...Object.keys(groups), "shadow"],
+    "/color",
+    ["shadow"],
+  );
+  if (colors && Object.hasOwn(colors, "shadow"))
+    color(colors, "shadow", "/color/shadow");
   if (colors)
     for (const [group, leaves] of Object.entries(groups)) {
       const path = pointer("/color", group);
+      const extra: readonly string[] =
+        optionalGroupLeaves[group as keyof typeof optionalGroupLeaves] ?? [];
       const data = object(
         colors[group],
-        group === "chart" ? [...leaves, "series"] : leaves,
+        group === "chart" ? [...leaves, "series"] : [...leaves, ...extra],
         path,
+        extra,
       );
       if (!data) continue;
+      for (const key of extra)
+        if (Object.hasOwn(data, key)) color(data, key, pointer(path, key));
       for (const key of leaves)
         color(
           data,

@@ -13,6 +13,14 @@ export type CoreColorPath =
   | `color.status.${Status}`
   | `color.chart.${Chart}`
   | `color.chart.series.${0 | 1 | 2 | 3 | 4 | 5 | 6 | 7}`;
+// Optional slots: absent from existing themes, so they are never valid
+// product-token sources (`defaultFrom` needs a value that always exists).
+export type OptionalColorPath =
+  | "color.border.default"
+  | "color.accent.pressed"
+  | "color.text.accent"
+  | "color.status.onWarning"
+  | "color.shadow";
 export type CoreLengthPath = `radius.${"sm" | "md" | "lg" | "pill"}`;
 export type ProductTokenSpec = Record<
   string,
@@ -41,10 +49,11 @@ export interface Theme {
   mode: "light" | "dark";
   color: {
     surface: Record<Surface, HexColor>;
-    text: Record<Text, HexColor>;
-    accent: Record<Accent, HexColor>;
-    border: Record<Border, HexColor>;
-    status: Record<Status, HexColor>;
+    text: Record<Text, HexColor> & { accent?: HexColor };
+    accent: Record<Accent, HexColor> & { pressed?: HexColor };
+    border: Record<Border, HexColor> & { default?: HexColor };
+    status: Record<Status, HexColor> & { onWarning?: HexColor };
+    shadow?: HexColor;
     chart: Record<Chart, HexColor> & {
       series: [
         HexColor,
