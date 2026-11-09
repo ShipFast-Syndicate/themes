@@ -7,8 +7,9 @@ contracts, validation, adapters and an optional editor.
 
 This repository is unreleased. It contains a local schema/value-validation and
 contrast-reporting foundation, a proposed CSS custom-property serialiser, package
-metadata and repository checks. CSS application, adapters, editor and presets are
-planned. There is no published release.
+metadata and repository checks, and a proposed adapter that produces the
+enterprise portal's `--ab-*` declarations. Other adapters, the editor and presets
+are planned. There is no published release.
 The package is marked `private: true` to prevent publication during this stage, but
 it can be packed into a tarball for
 [pre-publication consumption](docs/releasing.md#pre-publication-consumption).
@@ -51,7 +52,9 @@ accessibility acceptance. The proposed
 `serializeThemeCss`, its name map and output forms. The proposed
 [application attributes and boot script contract](docs/application-attributes.md)
 covers `themeHtmlAttributes`, `themeColorMetas` and the constant system boot
-script with its CSP hash.
+script with its CSP hash. The proposed
+[enterprise portal alias adapter](docs/enterprise-portal-alias.md) covers
+`portalAliasDeclarations`, its host-value grammar and the enterprise pin.
 
 Changes target `develop`. Releases are promoted to `main` after the relevant
 validation and release approval. Publication automation is not enabled yet.

@@ -13,9 +13,11 @@ tarball's `sha512` integrity.
 
 - The package exposes two entry points: `.`, resolving `dist/index.js` and
   `dist/index.d.ts`, and `./enterprise-portal`, resolving
-  `dist/enterprise-portal.js` and `dist/enterprise-portal.d.ts`. `files` limits
-  the archive to `dist`, `LICENSE` and `README.md`; `sideEffects` is `false`. The package stays `private: true`, which
-  `npm pack` ignores and which makes an authenticated `npm publish` fail.
+  `dist/enterprise-portal.js` and `dist/enterprise-portal.d.ts`; the second is the
+  proposed [enterprise portal alias adapter](enterprise-portal-alias.md). `files`
+  limits the archive to `dist`, `LICENSE` and `README.md`; `sideEffects` is
+  `false`. The package stays `private: true`, which `npm pack` ignores and which
+  makes an authenticated `npm publish` fail.
 - `npm pack` runs `prepack`, which deletes `dist/` and rebuilds it, so the archive
   never carries stale output. The archive is reproducible: the same tree gives the
   same integrity.
