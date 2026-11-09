@@ -14,6 +14,21 @@ export const groups = {
   status: ["positive", "negative", "warning", "info"],
   chart: ["grid", "axis", "tooltipBg"],
 } as const;
+// Optional colour slots in emission order (R1-R5). `shadow` sits directly under
+// `color`; the others extend a group.
+export const optionalGroupLeaves = {
+  border: ["default"],
+  accent: ["pressed"],
+  text: ["accent"],
+  status: ["onWarning"],
+} as const;
+export const optionalColorPaths = [
+  "color.border.default",
+  "color.accent.pressed",
+  "color.text.accent",
+  "color.status.onWarning",
+  "color.shadow",
+] as const;
 export const colorPaths = new Set<CoreColorPath>([
   ...Object.entries(groups).flatMap(([group, leaves]) =>
     leaves.map((leaf) => `color.${group}.${leaf}` as CoreColorPath),

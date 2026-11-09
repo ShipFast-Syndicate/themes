@@ -85,6 +85,62 @@ test("exact schema, version, modes and required leaves", () => {
   checkField("product", null, "value.type");
 });
 
+const optionalSlots = [
+  "color.border.default",
+  "color.accent.pressed",
+  "color.text.accent",
+  "color.status.onWarning",
+  "color.shadow",
+];
+
+test("five optional colour slots: absent stays valid, present is validated and lowercased", () => {
+  const base = validateTheme(json(theme()));
+  assert.equal(base.ok, true);
+  for (const path of optionalSlots) {
+    const [, ...keys] = path.split(".");
+    let node = base.theme.color;
+    for (const key of keys) node = node?.[key];
+    assert.equal(node, undefined, path);
+    const result = validateTheme(json(set(theme(), path, "#ABCDEF")));
+    assert.equal(result.ok, true, path);
+    let value = result.theme.color;
+    for (const key of keys) value = value[key];
+    assert.equal(value, "#abcdef", path);
+  }
+  const all = theme();
+  for (const path of optionalSlots) set(all, path, "#4A4A55");
+  assert.equal(validateTheme(json(all)).ok, true);
+  // Translucent values are allowed (shadows are usually translucent).
+  assert.equal(
+    validateTheme(json(set(theme(), "color.shadow", "#00000080"))).ok,
+    true,
+  );
+});
+
+test("five optional colour slots: bad values are rejected at their own path", () => {
+  for (const path of optionalSlots) {
+    checkField(path, "#fff");
+    checkField(path, "red");
+    checkField(path, 5, "value.type");
+    checkField(path, null, "value.type");
+  }
+  // Slots live only where documented.
+  checkField("color.border.pressed", "#000000", "keys.unknown");
+  checkField("color.surface.default", "#000000", "keys.unknown");
+  checkField("color.chart.shadow", "#000000", "keys.unknown");
+});
+
+test("optional colour slots are not product-token sources", () => {
+  for (const path of optionalSlots)
+    assert.equal(
+      defineProductTokens({
+        "demo.x": { type: "color", defaultFrom: path },
+      }).ok,
+      false,
+      path,
+    );
+});
+
 test("ID and Unicode name boundaries, display-only safety", () => {
   for (const id of ["a", "0", "a".repeat(48), "a-b"])
     assert.equal(validateTheme(json(set(theme(), "id", id))).ok, true);

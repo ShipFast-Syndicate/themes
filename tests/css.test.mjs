@@ -92,6 +92,40 @@ test("product tokens follow density-scale in code-unit order; omitted values equ
   }
 });
 
+test("optional colour slots emit only when set, in R1-R5 order after the core colours", () => {
+  const optional = [
+    ["color.border.default", "color-border-default", "#4a4a55"],
+    ["color.accent.pressed", "color-accent-pressed", "#4338ca"],
+    ["color.text.accent", "color-text-accent", "#a5b4fc"],
+    ["color.status.onWarning", "color-status-on-warning", "#000000"],
+    ["color.shadow", "color-shadow", "#00000080"],
+  ];
+  // Existing themes emit exactly the 39 core declarations.
+  assert.equal(names(serializeThemeCss(validated(theme()))).length, 39);
+  const all = theme("dark");
+  for (const [path, , value] of optional) set(all, path, value);
+  const css = serializeThemeCss(validated(all, demoTokens()));
+  const list = names(css);
+  const expected = [
+    ...coreNames.slice(0, 30).map(P),
+    ...optional.map(([, name]) => `--${prefix}-${name}`),
+    ...coreNames.slice(30).map(P),
+    `--${prefix}-ext-demo-gap`,
+    `--${prefix}-ext-demo-hero-end`,
+  ];
+  assert.deepEqual(list, expected);
+  for (const [, name, value] of optional)
+    assert.equal(valueOf(css, `--${prefix}-${name}`), value);
+  // Each slot alone emits exactly one extra declaration.
+  for (const [path, name, value] of optional) {
+    const single = names(
+      serializeThemeCss(validated(set(theme(), path, value.toUpperCase()))),
+    );
+    assert.equal(single.length, 40, path);
+    assert.ok(single.includes(`--${prefix}-${name}`), path);
+  }
+});
+
 test("number formatting rounds to four decimals without exponent, -0 or trailing zeros", () => {
   const emit = (path, value, name) =>
     valueOf(
