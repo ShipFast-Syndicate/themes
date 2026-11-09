@@ -12,6 +12,10 @@ import {
   type HexColor,
   type ProductTokenSpec,
 } from "../src/index.js";
+import {
+  portalAliasDeclarations,
+  type PortalHostValues,
+} from "../src/enterprise-portal.js";
 const declaration = defineProductTokens({
   "demo.heroEnd": { type: "color", defaultFrom: "color.accent.subtle" },
   "demo.gap": { type: "length", defaultFrom: "radius.md" },
@@ -140,3 +144,42 @@ const bootScript: string = systemBootScript;
 const bootSource: string = systemBootScriptCspSource;
 void bootScript;
 void bootSource;
+// The portal adapter takes a validated theme and a complete host object; the
+// runtime registry and grammar, not these types, are the boundary.
+const portalTheme = validateTheme("{}");
+if (portalTheme.theme) {
+  const host: PortalHostValues = {
+    fontSize: "0.875rem",
+    space1: "0.25rem",
+    space2: "0.5rem",
+    space3: "0.75rem",
+    space4: "1rem",
+    borderWidth: "1px",
+    borderStyle: "solid",
+    shadow: "0 1px 3px rgb(0 0 0 / 20%)",
+  };
+  const declarations: string = portalAliasDeclarations(portalTheme.theme, host);
+  void declarations;
+  // @ts-expect-error a host object missing a key is incomplete
+  portalAliasDeclarations(portalTheme.theme, {
+    fontSize: "0.875rem",
+    space1: "0.25rem",
+    space2: "0.5rem",
+    space3: "0.75rem",
+    space4: "1rem",
+    borderWidth: "1px",
+    borderStyle: "solid",
+  });
+  portalAliasDeclarations(portalTheme.theme, {
+    ...host,
+    // @ts-expect-error an extra key is not part of the host object
+    extra: "1px",
+  });
+  portalAliasDeclarations(portalTheme.theme, {
+    ...host,
+    // @ts-expect-error host values are strings, never numbers
+    fontSize: 14,
+  });
+  // @ts-expect-error a raw theme object is not a validated theme
+  portalAliasDeclarations({} as Theme, host);
+}

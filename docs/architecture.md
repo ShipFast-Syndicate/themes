@@ -6,8 +6,10 @@ unreleased schema/value-validation/contrast foundation is documented in the
 implemented as a proposed, unreleased contract in
 [CSS serialisation](css-serialisation.md). Application attributes, theme-color
 data and a constant system boot script are implemented as a proposed, unreleased
-contract in [application attributes](application-attributes.md). Adapters and
-product integration remain planned; no installable package is available.
+contract in [application attributes](application-attributes.md). The enterprise
+portal `--ab-*` alias adapter is implemented as a proposed, unreleased contract in
+[enterprise portal alias](enterprise-portal-alias.md). Other adapters and product
+integration remain planned; no installable package is available.
 
 ## Core
 
