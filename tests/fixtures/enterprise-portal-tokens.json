@@ -1,0 +1,28 @@
+{
+  "package": "@alphabros/enterprise",
+  "version": "1.1.3",
+  "tag": "v1.1.3",
+  "commit": "d48fc6301c3e59482aba9e94bf0aec24fb14bd60",
+  "file": "src/portal/tokens.md",
+  "fileSha256": "a30b0c1a36f177c2e4409ccaefbb9ca430a8558a5be6852249856db138ed3d34",
+  "names": [
+    "--ab-font-family",
+    "--ab-font-size",
+    "--ab-color-text",
+    "--ab-color-text-muted",
+    "--ab-color-bg",
+    "--ab-color-surface",
+    "--ab-color-primary",
+    "--ab-color-on-primary",
+    "--ab-color-danger",
+    "--ab-color-success",
+    "--ab-color-border",
+    "--ab-border",
+    "--ab-radius",
+    "--ab-space-1",
+    "--ab-space-2",
+    "--ab-space-3",
+    "--ab-space-4",
+    "--ab-shadow"
+  ]
+}

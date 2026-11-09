@@ -195,6 +195,8 @@ color-scheme: light;
 
 ## Out of scope
 
-`--ab-*` aliases, SSR helpers, boot scripts, `<meta name="theme-color">`,
-presets, framework adapters, DOM application helpers, CSP handling, minification
-and caller-supplied selectors or prefixes are not part of this slice.
+The `--ab-*` aliases (they live in the separate, unreleased
+`@alphabros/themes/enterprise-portal` entry point, not in this serialiser), SSR
+helpers, boot scripts, `<meta name="theme-color">`, presets, other framework
+adapters, DOM application helpers, CSP handling, minification and
+caller-supplied selectors or prefixes are not part of this slice.

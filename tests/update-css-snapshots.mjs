@@ -3,9 +3,14 @@
 import { writeFile } from "node:fs/promises";
 import { snapshotCases } from "./css-cases.mjs";
 import { prefix } from "../dist/css.js";
+import { portalSnapshot, portalSnapshotFile } from "./enterprise-portal-cases.mjs";
 
 for (const { file, css } of snapshotCases())
   await writeFile(
     new URL(`snapshots/${file}`, import.meta.url),
     css().replaceAll(`--${prefix}-`, "--<P>-"),
   );
+await writeFile(
+  new URL(`snapshots/${portalSnapshotFile}`, import.meta.url),
+  portalSnapshot().replaceAll(`--${prefix}-`, "--<P>-"),
+);

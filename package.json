@@ -12,6 +12,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./enterprise-portal": {
+      "types": "./dist/enterprise-portal.d.ts",
+      "import": "./dist/enterprise-portal.js"
     }
   },
   "files": [
